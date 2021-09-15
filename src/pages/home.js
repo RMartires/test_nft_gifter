@@ -1,25 +1,28 @@
 import React, { useEffect } from "react";
-import createApp from '@shopify/app-bridge';
-import { Cart } from '@shopify/app-bridge/actions';
-
+import { CssBaseline, Container } from "@material-ui/core";
+import NFT from "../components/NFT";
 
 function Home() {
     useEffect(() => {
-        console.log(process.env.REACT_APP_SHOPIFY_API_KEY, process.env.REACT_APP_SHOP);
-        const app = createApp({
-            apiKey: process.env.REACT_APP_SHOPIFY_API_KEY,
-            shopOrigin: process.env.REACT_APP_SHOP,
-            host: Buffer.from(`${process.env.REACT_APP_SHOP}/admin`).toString('base64')
-        });
-        var cart = Cart.create(app);
-        cart.subscribe(Cart.Action.UPDATE, function (payload) {
-            console.log('[Client] cart update', payload);
-        });
-        console.log('hit2');
     }, []);
 
     return (
-        <h2>testing cart part</h2>
+        <div>
+            <CssBaseline />
+            <Container
+                maxWidth="sm"
+                style={{
+                    height: "100vh",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-around"
+                }}
+            >
+                <NFT
+                    url={"ipfs://QmXmirhTL5HQMi79xV2Mb4PK5Wqahhv2fEcd5YUPyvieVz"}
+                />
+            </Container>
+        </div>
     );
 }
 
