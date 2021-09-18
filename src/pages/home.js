@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { CssBaseline, Container } from "@material-ui/core";
+import { CssBaseline, Container, Button } from "@material-ui/core";
 import NFT from "../components/NFT";
 
-function Home() {
+function Home(props) {
     useEffect(() => {
     }, []);
 
@@ -15,12 +15,25 @@ function Home() {
                     height: "100vh",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "space-around"
+                    justifyContent: "space-around",
+                    flexDirection: "column"
                 }}
             >
-                <NFT
-                    url={"ipfs://QmXmirhTL5HQMi79xV2Mb4PK5Wqahhv2fEcd5YUPyvieVz"}
-                />
+                <div>
+                    <NFT
+                        url={props?.ipfs}
+                        setNFTData={props.setNFTData}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginTop: '20px' }}
+                        onClick={() => {
+                            props.changeView("transfer")
+                        }}>
+                        Transfer
+                    </Button>
+                </div>
             </Container>
         </div>
     );
