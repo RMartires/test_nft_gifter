@@ -21,6 +21,8 @@ function App() {
   const [NFTData, setNFTData] = useState(null);
   const [ipfs, setIpfs] = useState(null);
   const [view, setView] = useState("login");
+  const [id, setId] = useState(null);
+  const [transfered, setTransfered] = useState(null);
   const changeView = (type) => { setView(type) };
   const returnView = () => {
     switch (view) {
@@ -34,13 +36,15 @@ function App() {
       case "transfer":
         return (
           <Web3ReactProvider getLibrary={getLibrary}>
-            <Transfer NFTData={NFTData} />
+            <Transfer NFTData={NFTData} id={id} transfered={transfered} />
           </Web3ReactProvider>);
         break;
       case "login":
         return (<Login
           changeView={changeView}
           setIpfs={setIpfs}
+          setId={setId}
+          setTransfered={setTransfered}
         />);
         break;
     }
@@ -55,7 +59,12 @@ function App() {
           </Route>
         </Switch>
         <Switch>
-          <Route path="/">
+          <Route exact path="/404">
+            <Error />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route exact path="/">
             <Error />
           </Route>
         </Switch>

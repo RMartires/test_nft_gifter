@@ -1,14 +1,37 @@
-import React, { useEffect } from "react";
-import { CssBaseline, Container, Divider, Button } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { CssBaseline, Container, Divider, Button, CircularProgress } from "@material-ui/core";
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "../components/wallets/Connectors";
+import axios from "axios";
+import { doc, updateDoc } from "firebase/firestore";
+import db from "../utill/db";
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 function Transfer(props) {
+    const [owner, setOwner] = useState(null);
+    const [transfered, setTransfered] = useState(props.transfered);
+    const [transferReq, setTransferReq] = useState(false);
+
     useEffect(() => {
+        refreshOwner();
     }, []);
 
     const { active, account, library, connector, activate, deactivate } = useWeb3React();
+
+    function refreshOwner() {
+        setOwner(null);
+        axios({
+            method: 'POST',
+            url: `${process.env.REACT_APP_BASE_URL}/ownerOf`,
+            data: {
+                tokenId: props.id
+            }
+        }).then(res => {
+            setOwner(res.data.owner);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
     async function connect() {
         try {
@@ -23,6 +46,45 @@ function Transfer(props) {
             deactivate();
         } catch (ex) {
             console.log(ex);
+        }
+    }
+
+    function safeTransferFrom() {
+        setTransferReq(true);
+        axios({
+            method: 'POST',
+            url: `${process.env.REACT_APP_BASE_URL}/safeTransferFrom`,
+            data: {
+                from: owner,
+                to: account,
+                tokenId: props.id
+            }
+        }).then(res => {
+            const docRef = doc(db, "nfts", `${props.id}`);
+            return updateDoc(docRef, {
+                transfered: true
+            });
+        }).then(res => {
+            console.log("transfer req sent");
+            setTransferReq(false);
+            setTransfered(true);
+            refreshOwner();
+        }).catch(err => {
+            setTransferReq(false);
+            console.log(err);
+        });
+    }
+
+    function showTransfered() {
+        if (owner === account) {
+            return <p>you already own this NFT</p>
+        } else if (owner !== account && transfered) {
+            return <p>transfer request has been made, refresh this page in 5-10 mins</p>
+        } else if (owner !== account && !transfered) {
+            return <Button variant="contained" color="primary" onClick={() => { safeTransferFrom() }} disabled={!active}>
+                Transfer to me
+                {transferReq ? (<CircularProgress />) : ""}
+            </Button>
         }
     }
 
@@ -64,7 +126,7 @@ function Transfer(props) {
                             </p>
                         </div>
                     </div>
-                    <p style={{ textAlign: 'left' }}>Owner: {"0x11HNSIXDHDN"}</p>
+                    {owner ? (<p style={{ textAlign: 'left' }}>Owner: {owner}</p>) : (<CircularProgress />)}
                     <div style={{
                         backgroundColor: 'white',
                         height: '1px'
@@ -75,8 +137,9 @@ function Transfer(props) {
                 </div>
                 {active ?
                     (<p style={{ textAlign: 'left' }} >Connected: {account}</p>)
-                    : (<Button onClick={connect} variant="contained" color="primary">Connect to MetaMask</Button>)}
-                <Button variant="contained" color="primary" onClick={() => { }} disabled={!active}>Transfer</Button>
+                    : (<Button onClick={connect} variant="contained"
+                        color="primary" disabled={!owner} >Connect to MetaMask</Button>)}
+                {showTransfered()}
             </Container>
         </div>
     );

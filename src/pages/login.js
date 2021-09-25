@@ -20,6 +20,8 @@ function Login(props) {
             });
             if (!data) throw new Error("Error: wrong id");
             props.setIpfs(data.url);
+            props.setId(data.tokenId);
+            props.setTransfered(data?.transfered);
             setData(data);
             return data;
         } catch (err) {
