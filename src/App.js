@@ -11,6 +11,7 @@ import Home from './pages/home.js'
 import Transfer from './pages/transfer.js';
 import Login from './pages/login.js';
 import Error from './pages/error.js';
+import Homepage from './pages/homepage/index';
 
 function getLibrary(provider) {
   return new Web3(provider);
@@ -65,7 +66,7 @@ function App() {
         </Switch>
         <Switch>
           <Route exact path="/">
-            <Error />
+            <Homepage />
           </Route>
         </Switch>
       </Router>
