@@ -11,6 +11,7 @@ import Home from './pages/home.js'
 import Transfer from './pages/transfer.js';
 import Login from './pages/login.js';
 import Error from './pages/error.js';
+import PP from './pages/pp';
 import Homepage from './pages/homepage/index';
 
 function getLibrary(provider) {
@@ -62,6 +63,11 @@ function App() {
         <Switch>
           <Route exact path="/404">
             <Error />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route exact path="/privacy">
+            <PP />
           </Route>
         </Switch>
         <Switch>
