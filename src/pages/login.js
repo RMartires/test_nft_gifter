@@ -12,17 +12,14 @@ function Login(props) {
 
     const getData = async (uuid) => {
         try {
-            const q = query(collection(db, "nfts"), where("uuid", "==", uuid));
-            const querySnapshot = await getDocs(q);
             let data = null;
+            let querySnapshot = await getDocs(query(collection(db, "orders"), where("uuid", "==", uuid)));
             querySnapshot.forEach((doc) => {
                 data = doc.data();
             });
-            if (!data) throw new Error("Error: wrong id");
-            props.setIpfs(data.url);
-            props.setId(data.tokenId);
-            props.setTransfered(data?.transfered);
+            if (!data) throw new Error();
             setData(data);
+            props.setOrderData(data);
             return data;
         } catch (err) {
             console.log(err);
@@ -31,7 +28,8 @@ function Login(props) {
     };
 
     useEffect(async () => {
-        let uuid = window.location.href.split("/nft?Id=")[1];
+        let uuid = window.location.href.split("/nft?id=")[1];
+        console.log(uuid);
         if (uuid) {
             await getData(uuid);
         } else {
@@ -75,7 +73,7 @@ function Login(props) {
                             id="filled-hidden-label-normal"
                             defaultValue="Normal"
                             variant="filled"
-                            value={`Token Id: ${data?.tokenId}`}
+                            value={`Order Id: ${data?.uuid}`}
                             disabled={true}
                         />
                         <TextField

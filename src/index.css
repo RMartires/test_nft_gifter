@@ -13,7 +13,7 @@ code {
 }
 
 #root {
-  background-color: #0f0f0f;
+  background-color: #000000;
 }
 
 a {
@@ -24,4 +24,31 @@ a:link {
 }
 a:visited {
   color: white;
+}
+
+.claimbg {
+  padding: 100px 0;
+  background-size: 78%;
+  background-image: url('./images/bg-art.png');
+  opacity: 0.8;
+}
+
+.transferPanel {
+  background-color: #541212 !important;
+  margin: auto;
+  max-width: 1000px;
+  position: relative;
+  top: -90px;
+}
+
+@media screen and (max-width: 500px) {
+  .transferPanel {
+    margin: 20px;
+  }
+
+  .claimbg {
+    background-size: 150%;
+    padding-top: 20px;
+    padding-bottom: 80px;
+  }
 }

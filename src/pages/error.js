@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CssBaseline, Container, Button, TextField, Card, CircularProgress } from "@material-ui/core";
+import Navbar from "../components/Navbar";
 
 function Error(props) {
 
@@ -9,6 +10,10 @@ function Error(props) {
     return (
         <div>
             <CssBaseline />
+            {/* <Navbar style={{
+                display: 'flex',
+                alignItems: 'center',
+            }} /> */}
             <Container
                 maxWidth="xs"
                 style={{

@@ -20,10 +20,8 @@ function getLibrary(provider) {
 
 function App() {
 
-  const [NFTData, setNFTData] = useState(null);
-  const [ipfs, setIpfs] = useState(null);
+  const [orderData, setOrderData] = useState(null);
   const [view, setView] = useState("login");
-  const [id, setId] = useState(null);
   const [transfered, setTransfered] = useState(null);
   const changeView = (type) => { setView(type) };
   const returnView = () => {
@@ -31,22 +29,20 @@ function App() {
       case "view":
         return (<Home
           changeView={changeView}
-          setNFTData={setNFTData}
-          ipfs={ipfs}
+          orderData={orderData}
         />);
         break;
       case "transfer":
         return (
           <Web3ReactProvider getLibrary={getLibrary}>
-            <Transfer NFTData={NFTData} id={id} transfered={transfered} />
+            {/* <Transfer NFTData={NFTData} id={id} transfered={transfered} /> */}
           </Web3ReactProvider>);
         break;
       case "login":
         return (<Login
           changeView={changeView}
-          setIpfs={setIpfs}
-          setId={setId}
           setTransfered={setTransfered}
+          setOrderData={setOrderData}
         />);
         break;
     }
