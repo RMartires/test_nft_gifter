@@ -28,7 +28,7 @@ export default function ConnectButton(props) {
                 setButton({ content: "Connect to MetaMask", size: "large", primary: 'true', loading: 'true' });
                 break;
             case "connected":
-                setButton({ content: `Connected account: ${account}`, size: "large", plain: 'true', primary: 'true' });
+                setButton({ content: `Connected account: ${account.substring(0, 5)}...`, size: "large", plain: 'true', primary: 'true' });
                 break;
         }
     }

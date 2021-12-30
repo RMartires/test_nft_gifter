@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { CssBaseline, Container, Button, Tooltip, makeStyles, Card, CardContent } from "@material-ui/core";
+import {
+    CssBaseline, Container, Button, Tooltip, makeStyles, Card,
+    CardContent, CircularProgress
+} from "@material-ui/core";
 import { MetaMaskProvider } from "metamask-react";
+import { doc, updateDoc } from "firebase/firestore";
+import db from "../utill/db";
 import NFT from "../components/NFT";
 import Navbar from "../components/Navbar";
 import Fotter from "../components/Fotter";
@@ -20,12 +25,36 @@ const useStyles = makeStyles({
 
 function Home(props) {
     const [account, setAccount] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [transfer, setTransfer] = useState(null || props?.orderData?.progress);
 
     useEffect(() => {
 
     }, [account]);
 
     const classes = useStyles();
+
+    const showInfo = () => {
+        switch (transfer) {
+            case "claimResponse":
+                return <h4 style={{ color: 'white' }}>claim processing, we will email you when the ordered tokens are transfered</h4>
+                break;
+            case "transfered":
+                return <h4 style={{ color: 'white' }}>Transfer complete</h4>;
+                break;
+            default:
+                return (
+                    <div style={{
+                        height: '20vh'
+                    }}>
+                        <MetaMaskProvider>
+                            <ConnectButton setAccount={setAccount} />
+                        </MetaMaskProvider>
+                    </div>
+                );
+                break;
+        }
+    };
 
     return (
         <div>
@@ -38,7 +67,7 @@ function Home(props) {
             }}>
                 <Navbar />
             </div>
-            <div className="claimbg" style={{ color: 'white', textAlign: 'left' }}>
+            <div className="claimbg" style={{ color: 'white', textAlign: 'center' }}>
                 <h1>Claim your NFTs</h1>
             </div>
             <div className="claimbgPic"></div>
@@ -61,18 +90,24 @@ function Home(props) {
                         flexDirection: 'row-reverse',
                     }}>
                         <Tooltip title="Transfer">
-                            <Button variant="outlined" disabled={account ? false : true}> Transfer</Button>
+                            <Button variant="outlined" disabled={account ? false : true}
+                                onClick={async () => {
+                                    if (transfer == null) {
+                                        setLoading(true);
+                                        await updateDoc(doc(db, "orders", props.orderData.uuid), {
+                                            buyerWallet: account,
+                                            progress: "claimResponse"
+                                        });
+                                        setLoading(false);
+                                        setTransfer("claimResponse");
+                                    }
+                                }}
+                            > {loading ? (<CircularProgress />) : "Claim"} </Button>
                         </Tooltip>
                     </div>
                 </CardContent>
             </Card>
-            <div style={{
-                height: '20vh'
-            }}>
-                <MetaMaskProvider>
-                    <ConnectButton setAccount={setAccount} />
-                </MetaMaskProvider>
-            </div>
+            {showInfo()}
             <Fotter />
         </div>
     );

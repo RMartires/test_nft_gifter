@@ -6,7 +6,7 @@ export default function Navbar(props) {
         <div style={props.style ? props.style : {
             display: 'flex',
             alignItems: 'center',
-            marginLeft: '5vw'
+            marginLeft: '20px'
         }}>
             <div>
                 <img

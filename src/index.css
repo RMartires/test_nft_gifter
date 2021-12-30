@@ -41,6 +41,10 @@ a:visited {
   top: -90px;
 }
 
+.footer-copyright {
+  margin-left: 20px;
+}
+
 @media screen and (max-width: 500px) {
   .transferPanel {
     margin: 20px;
@@ -50,5 +54,9 @@ a:visited {
     background-size: 150%;
     padding-top: 20px;
     padding-bottom: 80px;
+  }
+
+  .footer-copyright {
+    margin-left: 0px;
   }
 }
