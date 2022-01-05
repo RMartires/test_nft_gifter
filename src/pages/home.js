@@ -5,6 +5,7 @@ import {
 } from "@material-ui/core";
 import { MetaMaskProvider } from "metamask-react";
 import { doc, updateDoc } from "firebase/firestore";
+import axios from "axios";
 import db from "../utill/db";
 import NFT from "../components/NFT";
 import Navbar from "../components/Navbar";
@@ -37,7 +38,7 @@ function Home(props) {
     const showInfo = () => {
         switch (transfer) {
             case "claimResponse":
-                return <h4 style={{ color: 'white' }}>claim processing, we will email you when the ordered tokens are transfered</h4>
+                return <h4 style={{ color: 'white' }}>claim processing, should take around 5 mins :)</h4>
                 break;
             case "transfered":
                 return <h4 style={{ color: 'white' }}>Transfer complete</h4>;
@@ -83,7 +84,7 @@ function Home(props) {
                         }}
                     >
 
-                        {props?.orderData?.tokens?.map(token => <NFT url={token.tokenMeta} />)}
+                        {props?.orderData?.tokens?.map(token => <NFT meta={token.tokenMeta} />)}
                     </Container>
                     <div style={{
                         display: 'flex',
@@ -97,6 +98,13 @@ function Home(props) {
                                         await updateDoc(doc(db, "orders", props.orderData.uuid), {
                                             buyerWallet: account,
                                             progress: "claimResponse"
+                                        });
+                                        await axios({
+                                            method: 'POST',
+                                            url: process.env.REACT_APP_TRANSFER,
+                                            data: {
+                                                orderId: props.orderData.uuid
+                                            }
                                         });
                                         setLoading(false);
                                         setTransfer("claimResponse");

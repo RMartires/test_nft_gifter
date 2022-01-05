@@ -30,22 +30,12 @@ const useStyles = makeStyles({
 
 
 function NFT(props) {
-    const [NFTData, setNFTData] = useState(null);
+    const [NFTData, setNFTData] = useState(props?.meta);
     let history = useHistory();
 
     const classes = useStyles();
 
     useEffect(async () => {
-        try {
-            let res = await axios({
-                method: "GET",
-                url: `https://ipfs.io/ipfs/${props.url.split("ipfs://")[1]}`
-            });
-            setNFTData(res.data);
-        } catch (err) {
-            console.log(err);
-            history.push("/404");
-        }
     }, []);
 
     return (
