@@ -94,20 +94,23 @@ function Home(props) {
                             <Button variant="outlined" disabled={account ? false : true}
                                 onClick={async () => {
                                     if (transfer == null) {
-                                        setLoading(true);
-                                        await updateDoc(doc(db, "orders", props.orderData.uuid), {
-                                            buyerWallet: account,
-                                            progress: "claimResponse"
-                                        });
-                                        await axios({
-                                            method: 'POST',
-                                            url: process.env.REACT_APP_TRANSFER,
-                                            data: {
-                                                orderId: props.orderData.uuid
-                                            }
-                                        });
-                                        setLoading(false);
-                                        setTransfer("claimResponse");
+                                        try {
+                                            setLoading(true);
+                                            await updateDoc(doc(db, "orders", props.orderData.uuid), {
+                                                buyerWallet: account,
+                                                progress: "claimResponse"
+                                            });
+                                            await fetch(process.env.REACT_APP_TRANSFER, {
+                                                method: 'POST',
+                                                body: {
+                                                    orderId: props.orderData.uuid
+                                                }
+                                            });
+                                            setLoading(false);
+                                            setTransfer("claimResponse");
+                                        } catch (err) {
+                                            console.log(err);
+                                        }
                                     }
                                 }}
                             > {loading ? (<CircularProgress />) : "Claim"} </Button>
