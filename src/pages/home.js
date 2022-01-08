@@ -100,11 +100,8 @@ function Home(props) {
                                                 buyerWallet: account,
                                                 progress: "claimResponse"
                                             });
-                                            await fetch(process.env.REACT_APP_TRANSFER, {
-                                                method: 'POST',
-                                                body: {
-                                                    orderId: props.orderData.uuid
-                                                }
+                                            await fetch(`${process.env.REACT_APP_TRANSFER}?orderId=${props.orderData.uuid}`, {
+                                                method: 'GET'
                                             });
                                             setLoading(false);
                                             setTransfer("claimResponse");
