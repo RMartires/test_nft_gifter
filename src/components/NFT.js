@@ -43,14 +43,14 @@ function NFT(props) {
             <CardContent>
                 <CardMedia
                     className={classes.media}
-                    image={`https://ipfs.io/ipfs/${NFTData?.URL.split("ipfs://")[1]}`}
-                    title={NFTData?.Title}
+                    image={`https://ipfs.io/ipfs/${NFTData?.image.split("ipfs://")[1]}`}
+                    title={NFTData?.name}
                 />
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
-                    Title: {NFTData?.Title}
+                    Title: {NFTData?.name}
                 </Typography>
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
-                    Description: {NFTData?.Description}
+                    Description: {NFTData?.description}
                 </Typography>
             </CardContent>
         </Card>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import db from "../../utill/db";
-
+import Navbar from "../../components/Navbar";
 
 function Homepage(props) {
 
@@ -25,20 +25,21 @@ function Homepage(props) {
         }}>
             <div class="body-wrap boxed-container">
                 <header class="site-header">
-                    <div class="container">
+                    {/* <div class="container">
                         <div class="site-header-inner">
                             <div class="brand header-brand">
                                 <h1 class="m-0">
                                     <a href="#">
-                                        <img src={"favicon.ico"} style={{
-                                            width: "75px",
-                                            height: "75px"
+                                        <img src={TT} style={{
+                                            width: "100px",
+                                            height: "100px"
                                         }} />
                                     </a>
                                 </h1>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
+                    <Navbar />
                 </header>
 
                 <main>

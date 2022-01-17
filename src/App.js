@@ -13,6 +13,7 @@ import Login from './pages/login.js';
 import Error from './pages/error.js';
 import PP from './pages/pp';
 import Homepage from './pages/homepage/index';
+import ShopifyHomepage from './pages/ShopifyHomepage';
 
 function getLibrary(provider) {
   return new Web3(provider);
@@ -64,6 +65,11 @@ function App() {
         <Switch>
           <Route exact path="/privacy">
             <PP />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route exact path="/shopify">
+            <ShopifyHomepage />
           </Route>
         </Switch>
         <Switch>
