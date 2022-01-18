@@ -34,8 +34,13 @@ export default function ConnectButton(props) {
     }
 
     return (
-        <Button onClick={connect} color="secondary" variant="outlined">
-            {button.content}
-        </Button>
+        <div>
+            <Button onClick={connect} color="secondary" variant="outlined">
+                {button.content}
+            </Button>
+            {(status == "unavailable") ? <p style={{ color: 'white', marginTop: '20px' }}>
+                <a href="https://near-anteater-052.notion.site/How-to-setup-Metamask-for-TurtleNFT-a50bf244f91b4f3394d9638baeb5e19b"
+                    target="_blank">Check out this tutorial to set up Metamask</a></p> : ""}
+        </div>
     );
 }
