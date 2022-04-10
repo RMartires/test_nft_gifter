@@ -1,3 +1,26 @@
 #root {
-  background-color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+a {
+  color: unset !important;
+}
+a:link {
+  color: unset !important;
+}
+a:visited {
+  color: unset !important;
+}
+
+svg {
+  color: black;
+}
+
+body {
+  margin: 0;
+  font-family: unset !important;
+}
+
+code {
+  font-family: unset !important;
 }
