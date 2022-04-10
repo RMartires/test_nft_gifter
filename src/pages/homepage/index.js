@@ -9,6 +9,10 @@ function Homepage(props) {
     const [email, setEmail] = useState("");
     const [sent, setSent] = useState(false);
 
+    useEffect(() => {
+        window.location.href = "https://www.tophatturtle.in/shopify";
+    });
+
     const addEmail = async () => {
         try {
             await setDoc(doc(db, "email-leads", `${email}`), {
@@ -21,7 +25,8 @@ function Homepage(props) {
     };
 
     return (
-        <Redirect to="/shopify" />
+        <div></div>
+        // <Redirect to="/shopify" />
     );
 
     // return (
