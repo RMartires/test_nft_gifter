@@ -67,11 +67,11 @@ function App() {
             <PP />
           </Route>
         </Switch>
-        {/* <Switch>
+        <Switch>
           <Route exact path="/shopify">
-            <ShopifyHomepage />
+            <Homepage />
           </Route>
-        </Switch> */}
+        </Switch>
         <Switch>
           <Route exact path="/">
             <Homepage />
