@@ -3,6 +3,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { Redirect } from "react-router-dom";
 import db from "../../utill/db";
 import Navbar from "../../components/Navbar";
+import FunggyLogo from "../../images/FunggyLogo.jpg";
 
 function Homepage(props) {
 
@@ -10,7 +11,9 @@ function Homepage(props) {
     const [sent, setSent] = useState(false);
 
     useEffect(() => {
-        window.location.href = "https://www.tophatturtle.in/shopify";
+        setTimeout(() => {
+            window.location.href = "https://www.combased.io/products/shopify-app";
+        }, 1500);
     });
 
     const addEmail = async () => {
@@ -25,8 +28,26 @@ function Homepage(props) {
     };
 
     return (
-        <div></div>
-        // <Redirect to="/shopify" />
+        <div style={{
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: '#161619',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+            <img src={FunggyLogo}
+                style={{
+                    width: '250px',
+                    height: '250px',
+                    borderRadius: '20px'
+                }}
+            >
+            </img>
+            <h4>Turtle NFT is now Funggy :) </h4>
+            <h7>redirecting...</h7>
+        </div>
     );
 
     // return (
