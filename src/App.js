@@ -31,6 +31,7 @@ function App() {
         return (<Home
           changeView={changeView}
           orderData={orderData}
+          setOrderData={setOrderData}
         />);
         break;
       case "transfer":

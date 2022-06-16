@@ -13,7 +13,7 @@ export default function Fotter(props) {
                 minHeight: '100px'
             }}>
                 <div class="site-footer-inner has-top-divider">
-                    <div style={{ color: 'white' }} class="footer-copyright">&copy; 2021 TophatTurtle, all rights reserved</div>
+                    <div style={{ color: 'white' }} class="footer-copyright">&copy; 2022 Fungyy, all rights reserved</div>
                     <ul class="footer-social-links list-reset">
                         <li>
                             <a href="#">

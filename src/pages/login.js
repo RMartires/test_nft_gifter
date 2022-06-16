@@ -54,13 +54,13 @@ function Login(props) {
             <Navbar style={{
                 display: 'flex',
                 alignItems: 'center',
-                backgroundColor: '#541212'
+                backgroundColor: '#0b0b0b'
             }}
             />
             <Container
                 maxWidth="xs"
                 style={{
-                    height: "80vh",
+                    height: "90vh",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "flex-start",
@@ -108,7 +108,6 @@ function Login(props) {
                     </Card>
                 ) : (<CircularProgress />)}
             </Container>
-            <Fotter />
         </div>
     );
 }

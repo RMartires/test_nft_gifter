@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TT from "./TT.png";
+import FungyyLogo from "../images/FungyyLogo.jpg";
 
 export default function Navbar(props) {
     return (
@@ -10,12 +10,12 @@ export default function Navbar(props) {
         }}>
             <div>
                 <img
-                    src={TT}
+                    src={FungyyLogo}
                     style={{ height: '10vh' }}
                 />
             </div>
             <div style={{ color: 'white' }}>
-                <p style={{ fontSize: '4vh', margin: 'auto', fontWeight: 'bold' }}>TophatTurtle</p>
+                <p style={{ fontSize: '4vh', margin: 'auto', fontWeight: 'bold' }}></p>
             </div>
         </div>
     );
