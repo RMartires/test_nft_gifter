@@ -58,13 +58,27 @@ function Home(props) {
 
     const claim = async () => {
         console.log(transfer);
-        if (transfer == null || transfer == "failed") {
+        if (transfer == null) {
             try {
                 setLoading(true);
                 await updateDoc(doc(db, "orders", props.orderData.uuid), {
                     buyerWallet: account,
                     progress: "claimResponse"
                 });
+                await fetch(`${process.env.REACT_APP_TRANSFER}?orderId=${props.orderData.uuid}`, {
+                    method: 'GET'
+                });
+                setLoading(false);
+                setTransfer("claimResponse");
+                setInterval(async () => {
+                    await getData();
+                }, 30 * 1000);
+            } catch (err) {
+                console.log(err);
+            }
+        } else if (transfer == "failed") {
+            try {
+                setLoading(true);
                 await fetch(`${process.env.REACT_APP_TRANSFER}?orderId=${props.orderData.uuid}`, {
                     method: 'GET'
                 });
