@@ -14,6 +14,7 @@ import Error from './pages/error.js';
 import PP from './pages/pp';
 import Homepage from './pages/homepage/index';
 import ShopifyHomepage from './pages/ShopifyHomepage';
+import { DappProvider } from "@elrondnetwork/dapp-core";
 
 function getLibrary(provider) {
   return new Web3(provider);
@@ -51,6 +52,7 @@ function App() {
   }
 
   return (
+      <DappProvider environment={"mainnet"}>
     <div className="App">
       <Router>
         <Switch>
@@ -80,6 +82,7 @@ function App() {
         </Switch>
       </Router>
     </div>
+      </DappProvider>
   );
 }
 

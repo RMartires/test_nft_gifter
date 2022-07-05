@@ -11,11 +11,22 @@ import NFT from "../components/NFT";
 import Navbar from "../components/Navbar";
 import Fotter from "../components/Fotter";
 import ConnectButton from "../components/ConnectButton";
+import Route from "react-router-dom/es/Route";
+import Switch from "react-router-dom/es/Switch";
+import {DappProvider, DappUI, getAccount, useGetAccountInfo} from "@elrondnetwork/dapp-core";
+const {
+    DappCorePages: { UnlockPage }
+} = DappUI;
 
 const blockchainScans = {
     "polygonMainnet": "https://polygonscan.com/tx/",
     "polygonTestnet": "https://mumbai.polygonscan.com/tx/"
 };
+
+const WalletType = {
+    Elrond: "elrond",
+    Polygon: "polygon",
+}
 
 const useStyles = makeStyles({
     title: {
@@ -33,8 +44,21 @@ function Home(props) {
     const [account, setAccount] = useState(null);
     const [loading, setLoading] = useState(false);
     const [transfer, setTransfer] = useState(null || props?.orderData?.progress);
+    const [walletType, setWalletType] = useState(WalletType.Polygon);
+    const accountElrond = useGetAccountInfo();
+    const { address } = accountElrond;
 
-    useEffect(() => {
+    useEffect(async () => {
+        // getting initial data to check wallet type to enable
+        let tokens = props?.orderData?.tokens
+        if(tokens[0].blockchain === "elrondTestnet"){
+            setWalletType(WalletType.Elrond)
+        }
+
+        // setting Elrond account
+        if(!(address === "" || address === undefined)){
+            setAccount(address)
+        }
 
     }, [account]);
 
@@ -120,16 +144,24 @@ function Home(props) {
             case "failed":
                 return (<Button color="secondary" onClick={claim}>Retry</Button>);
             default:
-                return (
-                    <div style={{
-                        height: '20vh'
-                    }}>
-                        <MetaMaskProvider>
-                            <ConnectButton setAccount={setAccount} />
-                        </MetaMaskProvider>
-                    </div>
-                );
-                break;
+                return ( !account && walletType === WalletType.Elrond ?
+                        <div style={{
+                            height: '10vh'
+                        }}>
+                            <UnlockPage
+                                loginRoute={`/nft?id=${props.orderData.uuid}`}
+                                title="Main"
+                                description="Please choose a login method:"
+                            />
+                        </div> :
+                <div style={{
+                    height: '20vh'
+                }}>
+                    <MetaMaskProvider>
+                        <ConnectButton setAccount={setAccount} />
+                    </MetaMaskProvider>
+                </div>
+                )
         }
     };
 
