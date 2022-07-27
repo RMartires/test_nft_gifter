@@ -10,6 +10,7 @@ function Login(props) {
     const [password, setPassword] = useState("");
     const [passwordError, setError] = useState(false);
     const [data, setData] = useState(null);
+    const [p, setP] = useState(null);
     let history = useHistory();
 
     const getData = async (uuid) => {
@@ -31,13 +32,23 @@ function Login(props) {
 
     useEffect(async () => {
         let uuid = window.location.href.split("/nft?id=")[1];
-        console.log(uuid);
+        if (uuid.includes("&")) {
+            setP(uuid.split("&p=")[1]);
+            uuid = uuid.split("&")[0];
+        }
         if (uuid) {
             await getData(uuid);
         } else {
             history.push("/404");
         }
     }, []);
+
+    useEffect(async () => {
+        if (data && p == data.password) {
+            setError(false);
+            props.changeView("view");
+        }
+    }, [data]);
 
     const checkPassword = () => {
         if (password === data.password) {

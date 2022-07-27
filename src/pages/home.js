@@ -13,7 +13,7 @@ import Fotter from "../components/Fotter";
 import ConnectButton from "../components/ConnectButton";
 import Route from "react-router-dom/es/Route";
 import Switch from "react-router-dom/es/Switch";
-import {DappProvider, DappUI, getAccount, useGetAccountInfo} from "@elrondnetwork/dapp-core";
+import { DappProvider, DappUI, getAccount, useGetAccountInfo } from "@elrondnetwork/dapp-core";
 const {
     DappCorePages: { UnlockPage }
 } = DappUI;
@@ -51,12 +51,12 @@ function Home(props) {
     useEffect(async () => {
         // getting initial data to check wallet type to enable
         let tokens = props?.orderData?.tokens
-        if(tokens[0].blockchain === "elrondTestnet"){
+        if (tokens[0].blockchain === "elrondTestnet") {
             setWalletType(WalletType.Elrond)
         }
 
         // setting Elrond account
-        if(!(address === "" || address === undefined)){
+        if (!(address === "" || address === undefined)) {
             setAccount(address)
         }
 
@@ -144,23 +144,23 @@ function Home(props) {
             case "failed":
                 return (<Button color="secondary" onClick={claim}>Retry</Button>);
             default:
-                return ( !account && walletType === WalletType.Elrond ?
-                        <div style={{
-                            height: '10vh'
-                        }}>
-                            <UnlockPage
-                                loginRoute={`/nft?id=${props.orderData.uuid}`}
-                                title="Main"
-                                description="Please choose a login method:"
-                            />
-                        </div> :
-                <div style={{
-                    height: '20vh'
-                }}>
-                    <MetaMaskProvider>
-                        <ConnectButton setAccount={setAccount} />
-                    </MetaMaskProvider>
-                </div>
+                return (!account && walletType === WalletType.Elrond ?
+                    <div style={{
+                        height: '10vh'
+                    }}>
+                        <UnlockPage
+                            loginRoute={`/nft?id=${props.orderData.uuid}&p=${props.orderData.password}`}
+                            title="Main"
+                            description="Please choose a login method:"
+                        />
+                    </div> :
+                    <div style={{
+                        height: '20vh'
+                    }}>
+                        <MetaMaskProvider>
+                            <ConnectButton setAccount={setAccount} />
+                        </MetaMaskProvider>
+                    </div>
                 )
         }
     };
