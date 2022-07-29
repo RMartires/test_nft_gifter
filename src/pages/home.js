@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     CssBaseline, Container, Button, Tooltip, makeStyles, Card,
     CardContent, CircularProgress
 } from "@material-ui/core";
-import { MetaMaskProvider } from "metamask-react";
-import { doc, updateDoc, getDocs, query, collection, where } from "firebase/firestore";
+import {MetaMaskProvider} from "metamask-react";
+import {doc, updateDoc, getDocs, query, collection, where} from "firebase/firestore";
 import axios from "axios";
 import db from "../utill/db";
 import NFT from "../components/NFT";
@@ -14,8 +14,12 @@ import ConnectButton from "../components/ConnectButton";
 import Route from "react-router-dom/es/Route";
 import Switch from "react-router-dom/es/Switch";
 import {DappProvider, DappUI, getAccount, useGetAccountInfo} from "@elrondnetwork/dapp-core";
+import {useAuth} from "@elrond-giants/erd-react-hooks";
+import {AuthProviderType} from "@elrond-giants/erd-react-hooks/dist/types";
+import QRCode from "qrcode.react";
+
 const {
-    DappCorePages: { UnlockPage }
+    DappCorePages: {UnlockPage}
 } = DappUI;
 
 const blockchainScans = {
@@ -45,20 +49,25 @@ function Home(props) {
     const [loading, setLoading] = useState(false);
     const [transfer, setTransfer] = useState(null || props?.orderData?.progress);
     const [walletType, setWalletType] = useState(WalletType.Polygon);
-    const accountElrond = useGetAccountInfo();
-    const { address } = accountElrond;
+    const [url, setUrl] = useState(null);
+    // const accountElrond = useGetAccountInfo();
+    // const { address } = accountElrond;
+    const {address, authenticated, login, logout} = useAuth();
 
     useEffect(async () => {
         // getting initial data to check wallet type to enable
         let tokens = props?.orderData?.tokens
-        if(tokens[0].blockchain === "elrondTestnet"){
+        if (tokens[0].blockchain === "elrondTestnet") {
             setWalletType(WalletType.Elrond)
         }
 
-        // setting Elrond account
-        if(!(address === "" || address === undefined)){
+       console.log(address)
+        if (address !== null) {
+            console.log("setting")
             setAccount(address)
         }
+        console.log(address);
+
 
     }, [account]);
 
@@ -123,7 +132,8 @@ function Home(props) {
     const showInfo = () => {
         switch (transfer) {
             case "claimResponse":
-                return <h4 style={{ color: 'white' }}> <CircularProgress /> claim processing, should take around 5 mins :)</h4>
+                return <h4 style={{color: 'white'}}><CircularProgress/> claim processing, should take around 5 mins :)
+                </h4>
                 break;
             case "transfered":
                 return (
@@ -131,52 +141,57 @@ function Home(props) {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <h4 style={{ color: 'green' }}>
+                        <h4 style={{color: 'green'}}>
                             Transfer complete
                         </h4>
                         {props?.orderData.tokens.map(x =>
-                        (<a href={`${blockchainScans[x.blockchain]}${x.hash}`} target="_blank">
-                            <h4 style={{ color: 'green' }}>{x?.hash?.slice(0, 10)}...</h4>
-                        </a>))}
+                            (<a href={`${blockchainScans[x.blockchain]}${x.hash}`} target="_blank">
+                                <h4 style={{color: 'green'}}>{x?.hash?.slice(0, 10)}...</h4>
+                            </a>))}
                     </div>
                 );
                 break;
             case "failed":
                 return (<Button color="secondary" onClick={claim}>Retry</Button>);
             default:
-                return ( !account && walletType === WalletType.Elrond ?
+                return (address === null && walletType === WalletType.Elrond ?
                         <div style={{
                             height: '10vh'
                         }}>
-                            <UnlockPage
-                                loginRoute={`/nft?id=${props.orderData.uuid}`}
-                                title="Main"
-                                description="Please choose a login method:"
-                            />
+                            <div>
+                                <button onClick={async () => {
+                                    let url = await login(AuthProviderType.MAIAR);
+                                    setUrl(url);
+                                }}>
+                                    Login
+                                </button>
+                                {url !== null? <QRCode
+                                    value={`${url}`} style={{marginTop: 30}}/> : null}
+                            </div>
                         </div> :
-                <div style={{
-                    height: '20vh'
-                }}>
-                    <MetaMaskProvider>
-                        <ConnectButton setAccount={setAccount} />
-                    </MetaMaskProvider>
-                </div>
+                        <div style={{
+                            height: '20vh'
+                        }}>
+                            <MetaMaskProvider>
+                                <ConnectButton setAccount={setAccount}/>
+                            </MetaMaskProvider>
+                        </div>
                 )
         }
     };
 
     return (
         <div>
-            <CssBaseline />
+            <CssBaseline/>
             <div style={{
                 height: '12vh',
                 display: 'flex',
                 alignItems: 'center',
                 backgroundColor: '#0c0c0c'
             }}>
-                <Navbar />
+                <Navbar/>
             </div>
-            <div className="claimbg" style={{ color: 'white', textAlign: 'center' }}>
+            <div className="claimbg" style={{color: 'white', textAlign: 'center'}}>
                 <h1>Claim your NFTs</h1>
             </div>
             <div className="claimbgPic"></div>
@@ -192,7 +207,7 @@ function Home(props) {
                         }}
                     >
 
-                        {props?.orderData?.tokens?.map(token => <NFT meta={token.tokenMeta} />)}
+                        {props?.orderData?.tokens?.map(token => <NFT meta={token.tokenMeta}/>)}
                     </Container>
                     <div style={{
                         display: 'flex',
@@ -200,8 +215,8 @@ function Home(props) {
                     }}>
                         <Tooltip title="Transfer">
                             <Button variant="outlined" disabled={account ? false : true}
-                                onClick={claim}
-                            > {loading ? (<CircularProgress />) : "Claim"} </Button>
+                                    onClick={claim}
+                            > {loading ? (<CircularProgress/>) : "Claim"} </Button>
                         </Tooltip>
                     </div>
                 </CardContent>
