@@ -15,6 +15,7 @@ import PP from './pages/pp';
 import Homepage from './pages/homepage/index';
 import ShopifyHomepage from './pages/ShopifyHomepage';
 import { DappProvider } from "@elrondnetwork/dapp-core";
+import {AuthContextProvider} from "@elrond-giants/erd-react-hooks";
 
 function getLibrary(provider) {
   return new Web3(provider);
@@ -52,7 +53,7 @@ function App() {
   }
 
   return (
-      <DappProvider environment={"mainnet"}>
+      <AuthContextProvider env={"mainnet"}>
     <div className="App">
       <Router>
         <Switch>
@@ -82,7 +83,7 @@ function App() {
         </Switch>
       </Router>
     </div>
-      </DappProvider>
+      </AuthContextProvider>
   );
 }
 
